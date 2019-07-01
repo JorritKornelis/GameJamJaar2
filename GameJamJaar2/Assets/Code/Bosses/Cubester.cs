@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Cubester : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float moveSpeed;
+    public float moveDelay;
 
-    // Update is called once per frame
-    void Update()
+    public float laserTime;
+
+    public Transform eye;
+
+    public void CheckAttack()
     {
-        
+
     }
 }
