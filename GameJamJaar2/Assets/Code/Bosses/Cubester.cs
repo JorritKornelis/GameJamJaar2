@@ -51,6 +51,8 @@ public class Cubester : MonoBehaviour
         GameObject tempLaser = Instantiate(laser,eye.position,eye.rotation, eye);
         if (eye.position.y < normalHeight)
             StartCoroutine(AirTime(transform.position));
+        else
+            StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.2f,laserTime));
         yield return new WaitForSeconds(laserTime / 2);
         if (up)
             Destroy(tempLaser);
@@ -66,6 +68,7 @@ public class Cubester : MonoBehaviour
     public IEnumerator AirTime(Vector3 normalPos)
     {
         up = true;
+        StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.2f, laserTime / 2));
         while (activeLaser)
         {
             if (up)
@@ -75,6 +78,7 @@ public class Cubester : MonoBehaviour
             yield return null;
         }
         transform.position = normalPos;
+        StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.4f));
     }
 
     public void GoToPlayer()
@@ -120,6 +124,7 @@ public class Cubester : MonoBehaviour
         transform.position = oldPos + moveDirection;
         transform.rotation = oldRot;
         transform.Rotate(rotateDirection * 90, Space.World);
+        StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.1f));
         StartCoroutine(CheckAttack());
     }
 }
