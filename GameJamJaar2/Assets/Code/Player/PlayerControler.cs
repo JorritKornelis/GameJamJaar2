@@ -6,10 +6,14 @@ public class PlayerControler : MonoBehaviour
 {
     Vector3 moveVector;
     public float moveSpeed;
+    public bool mayMoveBool = true;
 
     void FixedUpdate()
     {
-        PlayerMove();
+        if (mayMoveBool == true)
+        {
+            PlayerMove();
+        }
         LookToMouse();
     }
 
