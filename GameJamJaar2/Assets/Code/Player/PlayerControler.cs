@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class PlayerControler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Vector3 moveVector;
+    public float moveSpeed;
+
+    void FixedUpdate()
     {
-        
+        PlayerMove();
+        LookToMouse();
     }
 
-    // Update is called once per frame
-    void Update()
+    void PlayerMove()
     {
-        
+        moveVector.x = -Input.GetAxis("Horizontal");
+        moveVector.z = -Input.GetAxis("Vertical");
+        transform.Translate(moveVector * Time.deltaTime * moveSpeed, Space.World);
+    }
+
+    void LookToMouse()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit = new RaycastHit();
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
+        }
     }
 }
