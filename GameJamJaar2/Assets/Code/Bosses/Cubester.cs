@@ -8,21 +8,73 @@ public class Cubester : MonoBehaviour
     public float moveDelay;
 
     public float laserTime;
+    public GameObject laser;
+    [Range(0,100)]
+    public int laserChance;
 
     public Transform eye;
     public float rotateSpeed;
     public string playerTag;
     public float heightChange;
+    public float moveSpeed;
+    public int laserCount;
+    int currentAttackIndex;
+    float normalHeight;
+    bool up;
+    bool activeLaser;
+    public float upspeed;
 
     public void Start()
     {
         StartCoroutine(CheckAttack());
+        currentAttackIndex = laserCount;
+        normalHeight = eye.position.y;
     }
 
     public IEnumerator CheckAttack()
     {
         yield return new WaitForSeconds(moveDelay);
-        GoToPlayer();
+        randomAttack();
+    }
+
+    public void randomAttack()
+    {
+        if (currentAttackIndex == 0)
+            StartCoroutine(Laser());
+        else
+            GoToPlayer();
+    }
+
+    public IEnumerator Laser()
+    {
+        activeLaser = true;
+        GameObject tempLaser = Instantiate(laser,eye.position,eye.rotation, eye);
+        if (eye.position.y < normalHeight)
+            StartCoroutine(AirTime(transform.position));
+        yield return new WaitForSeconds(laserTime / 2);
+        if (up)
+            Destroy(tempLaser);
+        up = false;
+        yield return new WaitForSeconds(laserTime / 2);
+        if(tempLaser)
+            Destroy(tempLaser);
+        currentAttackIndex = laserCount;
+        activeLaser = false;
+        StartCoroutine(CheckAttack());
+    }
+
+    public IEnumerator AirTime(Vector3 normalPos)
+    {
+        up = true;
+        while (activeLaser)
+        {
+            if (up)
+                transform.Translate(Vector3.up * Time.deltaTime * upspeed * ((Vector3.Distance(transform.position, normalPos) * 0.3f) + 1f), Space.World);
+            else
+                transform.Translate(-Vector3.up * Time.deltaTime * upspeed * 3f, Space.World);
+            yield return null;
+        }
+        transform.position = normalPos;
     }
 
     public void GoToPlayer()
@@ -39,6 +91,7 @@ public class Cubester : MonoBehaviour
 
     public IEnumerator Move(Vector2Int direction)
     {
+        currentAttackIndex--;
         Vector3 oldPos = transform.position;
         Quaternion oldRot = transform.rotation;
         float currentRotate = 90;
@@ -59,7 +112,7 @@ public class Cubester : MonoBehaviour
                 transform.position += Vector3.up * heightChange * Time.deltaTime;
             else
                 transform.position += -Vector3.up * heightChange * Time.deltaTime;
-            transform.Translate(moveDirection * 2.3f * Time.deltaTime, Space.World);
+            transform.Translate(moveDirection * moveSpeed* Time.deltaTime, Space.World);
             currentRotate -= rotateSpeed * Time.deltaTime;
             transform.Rotate(rotateDirection * rotateSpeed * Time.deltaTime, Space.World);
             yield return new WaitForSeconds(Time.deltaTime);
