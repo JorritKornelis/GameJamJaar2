@@ -27,9 +27,9 @@ public class Cubester : MonoBehaviour
 
     public void GoToPlayer()
     {
-        Vector2Int direction = new Vector2Int();
         Transform player = GameObject.FindWithTag(playerTag).transform;
         Vector3 tempDir = transform.position - player.position;
+        Vector2Int direction = new Vector2Int();
         if (Mathf.Abs(tempDir.x) > Mathf.Abs(tempDir.z))
             direction.x = (tempDir.x < 0) ? 1 : -1;
         else
