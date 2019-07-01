@@ -23,6 +23,7 @@ public class Cubester : MonoBehaviour
     bool up;
     bool activeLaser;
     public float upspeed;
+    public GameObject groundImpact;
 
     public void Start()
     {
@@ -79,6 +80,8 @@ public class Cubester : MonoBehaviour
         }
         transform.position = normalPos;
         StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.4f));
+        GameObject g = Instantiate(groundImpact, transform.position, Quaternion.identity);
+        Destroy(g, 2f);
     }
 
     public void GoToPlayer()
