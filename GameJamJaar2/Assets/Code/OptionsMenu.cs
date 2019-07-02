@@ -74,10 +74,10 @@ public class OptionsMenu : MonoBehaviour
         audioMixer.SetFloat("AmbientNoise", amount);
     }
 
-    public void CoppleAmbientEffectVolume(float amount)
+    /*public void CoppleAmbientEffectVolume(float amount)
     {
         audioMixer.SetFloat("AmbientEffect", amount);
-    }
+    }*/
 
     public void SetGraphics(int dropDown)
     {
