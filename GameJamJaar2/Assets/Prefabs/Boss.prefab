@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140253916416351658}
-  m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: -0, y: 0, z: 0.4992}
+  m_LocalRotation: {x: 0.000002078712, y: 0.70710796, z: -0.7071057, w: 0.0000021234155}
+  m_LocalPosition: {x: 0, y: 0, z: -0.48599994}
   m_LocalScale: {x: 0.92877, y: 0.05311034, z: 0.92877}
   m_Children: []
   m_Father: {fileID: 1140253916687566895}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: -180.00002}
 --- !u!33 &1140253916416351657
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -197,6 +197,19 @@ MonoBehaviour:
   upspeed: 13
   groundImpact: {fileID: 2308354794594736444, guid: ab603d42c99b4c24c8f58d4800e3439e,
     type: 3}
+  phaseMoveDelay: 0.1
+  lava: {fileID: 3853817290465599365, guid: 18c15457cdf64674eaac4d5ed3117d4d, type: 3}
+  lavaPool: {fileID: 3502009915867801433, guid: 37687e66ed2c0f4429da2aeb5f50430d,
+    type: 3}
+  phase2: 0
+  lavaLifetime: 1
+  phase2Explosion: {fileID: 1106715929632575234, guid: 3b14972fd2876974badc0f3c26c41528,
+    type: 3}
+  arrowBackSpeed: 500
+  arrowMask:
+    serializedVersion: 2
+    m_Bits: 256
+  checkSize: 2.57
 --- !u!1 &1140253916728395584
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,10 +233,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140253916728395584}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.4992}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
+  m_LocalPosition: {x: 0, y: 0, z: -0.545}
   m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
   m_Children: []
   m_Father: {fileID: 1140253916687566895}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180.00002, z: 0}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cubester : MonoBehaviour
+public class Cubester : BossBase
 {
     public float cubeSize;
     public float moveDelay;
@@ -26,12 +26,15 @@ public class Cubester : MonoBehaviour
     public GameObject groundImpact;
 
     [Header("Phase 2")]
-    public float phaseSpeed;
-    public float phaseRotateSpeed;
     public float phaseMoveDelay;
     public GameObject lava;
+    public GameObject lavaPool;
     public bool phase2;
     public float lavaLifetime;
+    public GameObject phase2Explosion;
+    public float arrowBackSpeed;
+    public LayerMask arrowMask;
+    public float checkSize;
 
     public void Start()
     {
@@ -40,7 +43,28 @@ public class Cubester : MonoBehaviour
         normalHeight = eye.position.y;
     }
 
-    public IEnumerator CheckAttack()
+    public void Update()
+    {
+        if (Physics.CheckBox(eye.position, new Vector3(checkSize, checkSize, 0.1f), eye.rotation, arrowMask) && Physics.CheckSphere(eye.position,checkSize,arrowMask))
+            if (!Physics.OverlapSphere(eye.position, checkSize, arrowMask)[0].GetComponent<Rigidbody>().isKinematic)
+            {
+                Physics.OverlapSphere(eye.position, checkSize, arrowMask)[0].GetComponent<Rigidbody>().AddExplosionForce(arrowBackSpeed, eye.transform.position, arrowBackSpeed);
+                Damage();
+            }
+    }
+
+    public override void Damage()
+    {
+        if (!phase2)
+        {
+            phase2 = true;
+            GameObject g = Instantiate(phase2Explosion, transform.position, Quaternion.identity);
+        }
+        else
+            Debug.Log("Yes");
+    }
+
+    public override IEnumerator CheckAttack()
     {
         yield return new WaitForSeconds(phase2? phaseMoveDelay : moveDelay);
         randomAttack();
@@ -74,6 +98,15 @@ public class Cubester : MonoBehaviour
         StartCoroutine(CheckAttack());
     }
 
+    public IEnumerator MoveLavaDown(GameObject lavaObject)
+    {
+        while (lavaObject != null)
+        {
+            lavaObject.transform.Translate(Vector3.down * Time.deltaTime * 0.1f);
+            yield return null;
+        }
+    }
+
     public IEnumerator AirTime(Vector3 normalPos)
     {
         up = true;
@@ -87,6 +120,12 @@ public class Cubester : MonoBehaviour
             yield return null;
         }
         transform.position = normalPos;
+        if (phase2)
+        {
+            GameObject l = Instantiate(lavaPool, transform.position, Quaternion.identity);
+            StartCoroutine(MoveLavaDown(l));
+            Destroy(l, lavaLifetime);
+        }
         StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.4f));
         GameObject g = Instantiate(groundImpact, transform.position, Quaternion.identity);
         Destroy(g, 2f);
@@ -109,6 +148,7 @@ public class Cubester : MonoBehaviour
         if (phase2)
         {
             GameObject g = Instantiate(lava, transform.position, Quaternion.identity);
+            StartCoroutine(MoveLavaDown(g));
             Destroy(g,lavaLifetime);
         }
         currentAttackIndex--;
@@ -142,5 +182,11 @@ public class Cubester : MonoBehaviour
         transform.Rotate(rotateDirection * 90, Space.World);
         StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.1f));
         StartCoroutine(CheckAttack());
+    }
+
+    public void OnDrawGizmosSelected()
+    {
+        if(eye)
+            Gizmos.DrawWireCube(eye.position,new Vector3(checkSize,checkSize,0.1f));
     }
 }
