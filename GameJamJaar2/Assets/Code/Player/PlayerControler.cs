@@ -62,27 +62,26 @@ public class PlayerControler : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire2"))
         {
-            if (Input.GetAxis("Horizontal") >0 && mayDash)
+            dashDir = new Vector3();
+            dashDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+            /*if (Input.GetAxis("Horizontal") >0 && mayDash)
             {
-                dashDir = new Vector3(1, 0, 0);
-                StartCoroutine(Dash());
-                Debug.Log(dashDir);
+                dashDir += new Vector3(1, 0, 0);
             }
-            else if (Input.GetAxis("Horizontal") < 0 && mayDash)
+            if (Input.GetAxis("Horizontal") < 0 && mayDash)
             {
-                dashDir = new Vector3(-1, 0, 0);
-                StartCoroutine(Dash());
-                Debug.Log(dashDir);
+                dashDir += new Vector3(-1, 0, 0);
             }
-            else if (Input.GetAxis("Vertical") > 0 && mayDash)
+            if (Input.GetAxis("Vertical") > 0 && mayDash)
             {
-                dashDir = new Vector3(0, 0, 1);
-                StartCoroutine(Dash());
-                Debug.Log(dashDir);
+                dashDir += new Vector3(0, 0, 1);
             }
-            else if (Input.GetAxis("Vertical") < 0 && mayDash)
+            if (Input.GetAxis("Vertical") < 0 && mayDash)
             {
-                dashDir = new Vector3(0, 0, -1);
+                dashDir += new Vector3(0, 0, -1);
+            }*/
+            if(dashDir != new Vector3())
+            {
                 StartCoroutine(Dash());
                 Debug.Log(dashDir);
             }
@@ -97,7 +96,7 @@ public class PlayerControler : MonoBehaviour
         while (currentTime > 0)
         {
             currentTime -= Time.deltaTime;
-            transform.Translate(dashDir * dashAmount * Time.deltaTime, Space.World);
+            transform.Translate(-dashDir * dashAmount * Time.deltaTime, Space.World);
             yield return null;
         }
         mayMoveBool = true;
