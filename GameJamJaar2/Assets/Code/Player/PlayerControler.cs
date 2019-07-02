@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class PlayerControler : MonoBehaviour
 {
@@ -9,6 +10,14 @@ public class PlayerControler : MonoBehaviour
     public bool mayMoveBool = true;
     public float dashAmount;
     public float dashTime;
+
+    [Header("Death")]
+    public GameObject vidHolder;
+
+    private void Start()
+    {
+        vidHolder.SetActive(false);
+    }
 
     void FixedUpdate()
     {
@@ -57,5 +66,11 @@ public class PlayerControler : MonoBehaviour
             yield return null;
         }
         mayMoveBool = true;
+    }
+
+    void PlayerDeath()
+    {
+        vidHolder.SetActive(true);
+        vidHolder.GetComponent<VideoPlayer>().Play();
     }
 }
