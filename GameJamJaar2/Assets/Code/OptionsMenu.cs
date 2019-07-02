@@ -20,6 +20,7 @@ public class OptionsMenu : MonoBehaviour
     void Start()
     {
         escHolder.SetActive(false);
+
         masterVolume.value = PlayerPrefs.GetFloat("MasterVolumeMix", 0);
         ambientNoise.value = PlayerPrefs.GetFloat("AmbientNoise", 4);
         ambientEffect.value = PlayerPrefs.GetFloat("AmbientEffect", 0);
