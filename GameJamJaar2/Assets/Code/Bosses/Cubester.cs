@@ -35,6 +35,7 @@ public class Cubester : BossBase
     public float arrowBackSpeed;
     public LayerMask arrowMask;
     public float checkSize;
+    public Material rageMaterial;
 
     public void Start()
     {
@@ -58,6 +59,7 @@ public class Cubester : BossBase
         if (!phase2)
         {
             phase2 = true;
+            GetComponent<MeshRenderer>().material = rageMaterial;
             GameObject g = Instantiate(phase2Explosion, transform.position, Quaternion.identity);
         }
         else
@@ -149,6 +151,8 @@ public class Cubester : BossBase
         {
             GameObject g = Instantiate(lava, transform.position, Quaternion.identity);
             StartCoroutine(MoveLavaDown(g));
+            int i = Random.Range(0, 4);
+            g.transform.Rotate(Vector3.up * i * 90);
             Destroy(g,lavaLifetime);
         }
         currentAttackIndex--;
@@ -177,6 +181,16 @@ public class Cubester : BossBase
             transform.Rotate(rotateDirection * rotateSpeed * Time.deltaTime * (phase2 ? 2 : 1), Space.World);
             yield return new WaitForSeconds(Time.deltaTime);
         }
+
+        if (phase2)
+        {
+            GameObject g = Instantiate(lava, Vector3.Lerp(oldPos, oldPos + moveDirection, 0.5f), Quaternion.identity);
+            StartCoroutine(MoveLavaDown(g));
+            int i = Random.Range(0, 4);
+            g.transform.Rotate(Vector3.up * i * 90);
+            Destroy(g, lavaLifetime);
+        }
+
         transform.position = oldPos + moveDirection;
         transform.rotation = oldRot;
         transform.Rotate(rotateDirection * 90, Space.World);
