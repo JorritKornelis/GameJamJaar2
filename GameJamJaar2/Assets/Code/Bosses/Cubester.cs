@@ -36,6 +36,7 @@ public class Cubester : BossBase
     public LayerMask arrowMask;
     public float checkSize;
     public Material rageMaterial;
+    public bool canBeDamaged;
 
     public void Start()
     {
@@ -54,6 +55,12 @@ public class Cubester : BossBase
             }
     }
 
+    public IEnumerator InvincibleFrames()
+    {
+        yield return new WaitForSeconds(0.5f);
+        canBeDamaged = true;
+    }
+
     public override void Damage()
     {
         if (!phase2)
@@ -61,9 +68,10 @@ public class Cubester : BossBase
             phase2 = true;
             GetComponent<MeshRenderer>().material = rageMaterial;
             GameObject g = Instantiate(phase2Explosion, transform.position, Quaternion.identity);
+            StartCoroutine(InvincibleFrames());
         }
-        else
-            Debug.Log("Yes");
+        else if(canBeDamaged)
+            Destroy(gameObject);
     }
 
     public override IEnumerator CheckAttack()
