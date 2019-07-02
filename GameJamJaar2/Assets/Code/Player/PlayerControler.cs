@@ -7,6 +7,8 @@ public class PlayerControler : MonoBehaviour
     Vector3 moveVector;
     public float moveSpeed;
     public bool mayMoveBool = true;
+    public float dashAmount;
+    public float dashTime;
 
     void FixedUpdate()
     {
@@ -15,6 +17,7 @@ public class PlayerControler : MonoBehaviour
             PlayerMove();
         }
         LookToMouse();
+        StartDash();
     }
 
     void PlayerMove()
@@ -33,5 +36,26 @@ public class PlayerControler : MonoBehaviour
         {
             transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
         }
+    }
+
+    void StartDash()
+    {
+        if (Input.GetButtonDown("Fire2"))
+        {
+            StartCoroutine(Dash());
+        }
+    }
+
+    IEnumerator Dash()
+    {
+        float currentTime = dashTime;
+        mayMoveBool = false;
+        while (currentTime > 0)
+        {
+            currentTime -= Time.deltaTime;
+            transform.Translate(Vector3.forward * dashAmount * Time.deltaTime);
+            yield return null;
+        }
+        mayMoveBool = true;
     }
 }
