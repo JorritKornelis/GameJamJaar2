@@ -97,7 +97,7 @@ public class PlayerControler : MonoBehaviour
         while (currentTime > 0)
         {
             currentTime -= Time.deltaTime;
-            transform.Translate(dashDir * dashAmount * Time.deltaTime);
+            transform.Translate(dashDir * dashAmount * Time.deltaTime, Space.World);
             yield return null;
         }
         mayMoveBool = true;
