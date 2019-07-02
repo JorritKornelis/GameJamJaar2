@@ -8,7 +8,7 @@ public class OptionsMenu : MonoBehaviour
 {
     [Header("Audio")]
     public AudioMixer audioMixer;
-    public Slider masterVolume, ambientNoise, ambientEffect;
+    public Slider masterVolume, ambientNoise;//, ambientEffect;
 
     [Header("Res")]
     public Dropdown dropDownRes;
@@ -23,7 +23,7 @@ public class OptionsMenu : MonoBehaviour
 
         masterVolume.value = PlayerPrefs.GetFloat("MasterVolumeMix", 0);
         ambientNoise.value = PlayerPrefs.GetFloat("AmbientNoise", 4);
-        ambientEffect.value = PlayerPrefs.GetFloat("AmbientEffect", 0);
+        //ambientEffect.value = PlayerPrefs.GetFloat("AmbientEffect", 0);
 
         resolutions = Screen.resolutions;
 

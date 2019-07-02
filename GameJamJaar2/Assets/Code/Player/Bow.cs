@@ -7,6 +7,7 @@ public class Bow : MonoBehaviour
     public GameObject arrow;
     public GameObject arrowPos;
     public bool gotArrow = true;
+    public bool zoekPijl = false;
     public float flySpeed;
     public float flySpeedBack;
     GameObject player;
@@ -23,15 +24,18 @@ public class Bow : MonoBehaviour
         RetrieveArrow();
         FireBow();
 
-        if (gotArrow == false && Physics.CheckSphere(player.transform.position, player.GetComponent<SphereCollider>().radius, collMask))
+        if (gotArrow == false&& zoekPijl==true && Physics.CheckSphere(player.transform.position, player.GetComponent<SphereCollider>().radius, collMask))
         {
-            arrow.transform.position = arrowPos.transform.position;
-            arrow.transform.rotation = arrowPos.transform.rotation;
-
             arrow.GetComponent<Rigidbody>().isKinematic = true;
             arrow.transform.parent = player.transform;
 
-            StartCoroutine(WaitBetweenShots());
+            arrow.transform.position = arrowPos.transform.position;
+            arrow.transform.rotation = arrowPos.transform.rotation;
+            zoekPijl = false;
+            if (zoekPijl == false)
+            {
+                StartCoroutine(WaitBetweenShots());
+            }
         }
     }
 
@@ -42,6 +46,7 @@ public class Bow : MonoBehaviour
             arrow.GetComponent<Rigidbody>().isKinematic = false;
             arrow.transform.parent = null;
             StartCoroutine(WaitBetweenShots());
+            zoekPijl = true;
 
             arrow.GetComponent<Rigidbody>().AddForce(-transform.forward * flySpeed * 10f);
         }
