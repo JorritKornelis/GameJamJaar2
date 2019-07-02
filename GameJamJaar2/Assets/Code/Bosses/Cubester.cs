@@ -37,6 +37,10 @@ public class Cubester : BossBase
     public float checkSize;
     public Material rageMaterial;
     public bool canBeDamaged;
+    public Transform deathLaserParent;
+    public List<Transform> deathLaserPoints;
+    public bool death;
+    public GameObject endExplosion;
 
     public void Start()
     {
@@ -70,8 +74,39 @@ public class Cubester : BossBase
             GameObject g = Instantiate(phase2Explosion, transform.position, Quaternion.identity);
             StartCoroutine(InvincibleFrames());
         }
-        else if(canBeDamaged)
-            Destroy(gameObject);
+        else if (canBeDamaged)
+        {
+            death = true;
+            StartCoroutine(EndKill());
+            canBeDamaged = false;
+        }
+    }
+
+    public IEnumerator EndKill()
+    {
+        yield return new WaitForSeconds(0.2f);
+        deathLaserParent.gameObject.SetActive(true);
+        deathLaserParent.transform.rotation = Quaternion.identity;
+        StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.3f, 7));
+        List<GameObject> tempLasers = new List<GameObject>();
+        yield return new WaitForSeconds(1f);
+        tempLasers.Add(Instantiate(laser, eye.position, eye.rotation));
+        yield return new WaitForSeconds(1f);
+        while (deathLaserPoints.Count != 0)
+        {
+            int index = Random.Range(0, deathLaserPoints.Count);
+            tempLasers.Add(Instantiate(laser, deathLaserPoints[index].position, deathLaserPoints[index].rotation));
+            yield return new WaitForSeconds(0.7f - (0.7f / deathLaserPoints.Count));
+            deathLaserPoints.RemoveAt(index);
+        }
+        GameObject g = Instantiate(endExplosion, transform.position, Quaternion.identity);
+
+        yield return new WaitForSeconds(1f);
+
+        Destroy(g, 1f);
+        foreach (GameObject laser in tempLasers)
+            Destroy(laser);
+        Destroy(gameObject);
     }
 
     public override IEnumerator CheckAttack()
@@ -82,10 +117,11 @@ public class Cubester : BossBase
 
     public void randomAttack()
     {
-        if (currentAttackIndex == 0)
-            StartCoroutine(Laser());
-        else
-            GoToPlayer();
+        if(!death)
+            if (currentAttackIndex == 0)
+                StartCoroutine(Laser());
+            else
+                GoToPlayer();
     }
 
     public IEnumerator Laser()
@@ -96,6 +132,8 @@ public class Cubester : BossBase
             StartCoroutine(AirTime(transform.position));
         else
             StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.2f,laserTime));
+        if (!up)
+            Camera.main.fieldOfView = 65f;
         yield return new WaitForSeconds(laserTime / 2);
         if (up)
             Destroy(tempLaser);
@@ -103,6 +141,7 @@ public class Cubester : BossBase
         yield return new WaitForSeconds(laserTime / 2);
         if(tempLaser)
             Destroy(tempLaser);
+        Camera.main.fieldOfView = 60f;
         currentAttackIndex = laserCount;
         activeLaser = false;
         StartCoroutine(CheckAttack());
@@ -166,7 +205,7 @@ public class Cubester : BossBase
         currentAttackIndex--;
         Vector3 oldPos = transform.position;
         Quaternion oldRot = transform.rotation;
-        float currentRotate = (!phase2 ? 90f : 45f);
+        float currentRotate = (!phase2 ? 90f : 60);
         Vector3 rotateDirection = new Vector3();
         if (direction.x == -1)
             rotateDirection = Vector3.forward;
@@ -180,13 +219,13 @@ public class Cubester : BossBase
         Vector3 moveDirection = new Vector3(direction.x * cubeSize, 0,direction.y * cubeSize);
         while (currentRotate > 0)
         {
-            if (currentRotate > (!phase2 ? 45f : 45f / 2f))
+            if (currentRotate > (!phase2 ? 45f : 30f))
                 transform.position += Vector3.up * heightChange * Time.deltaTime;
             else
                 transform.position += -Vector3.up * heightChange * Time.deltaTime;
-            transform.Translate(moveDirection * moveSpeed* Time.deltaTime * (phase2 ? 2 : 1), Space.World);
+            transform.Translate(moveDirection * moveSpeed* Time.deltaTime * (phase2 ? 1.33f : 1), Space.World);
             currentRotate -= rotateSpeed * Time.deltaTime * (phase2? 2 : 1);
-            transform.Rotate(rotateDirection * rotateSpeed * Time.deltaTime * (phase2 ? 2 : 1), Space.World);
+            transform.Rotate(rotateDirection * rotateSpeed * Time.deltaTime * (phase2 ? 1.33f : 1), Space.World);
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
