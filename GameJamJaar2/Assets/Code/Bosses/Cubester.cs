@@ -25,6 +25,14 @@ public class Cubester : MonoBehaviour
     public float upspeed;
     public GameObject groundImpact;
 
+    [Header("Phase 2")]
+    public float phaseSpeed;
+    public float phaseRotateSpeed;
+    public float phaseMoveDelay;
+    public GameObject lava;
+    public bool phase2;
+    public float lavaLifetime;
+
     public void Start()
     {
         StartCoroutine(CheckAttack());
@@ -34,7 +42,7 @@ public class Cubester : MonoBehaviour
 
     public IEnumerator CheckAttack()
     {
-        yield return new WaitForSeconds(moveDelay);
+        yield return new WaitForSeconds(phase2? phaseMoveDelay : moveDelay);
         randomAttack();
     }
 
@@ -98,10 +106,15 @@ public class Cubester : MonoBehaviour
 
     public IEnumerator Move(Vector2Int direction)
     {
+        if (phase2)
+        {
+            GameObject g = Instantiate(lava, transform.position, Quaternion.identity);
+            Destroy(g,lavaLifetime);
+        }
         currentAttackIndex--;
         Vector3 oldPos = transform.position;
         Quaternion oldRot = transform.rotation;
-        float currentRotate = 90;
+        float currentRotate = (!phase2 ? 90f : 45f);
         Vector3 rotateDirection = new Vector3();
         if (direction.x == -1)
             rotateDirection = Vector3.forward;
@@ -115,13 +128,13 @@ public class Cubester : MonoBehaviour
         Vector3 moveDirection = new Vector3(direction.x * cubeSize, 0,direction.y * cubeSize);
         while (currentRotate > 0)
         {
-            if (currentRotate > 45f)
+            if (currentRotate > (!phase2 ? 45f : 45f / 2f))
                 transform.position += Vector3.up * heightChange * Time.deltaTime;
             else
                 transform.position += -Vector3.up * heightChange * Time.deltaTime;
-            transform.Translate(moveDirection * moveSpeed* Time.deltaTime, Space.World);
-            currentRotate -= rotateSpeed * Time.deltaTime;
-            transform.Rotate(rotateDirection * rotateSpeed * Time.deltaTime, Space.World);
+            transform.Translate(moveDirection * moveSpeed* Time.deltaTime * (phase2 ? 2 : 1), Space.World);
+            currentRotate -= rotateSpeed * Time.deltaTime * (phase2? 2 : 1);
+            transform.Rotate(rotateDirection * rotateSpeed * Time.deltaTime * (phase2 ? 2 : 1), Space.World);
             yield return new WaitForSeconds(Time.deltaTime);
         }
         transform.position = oldPos + moveDirection;
