@@ -64,26 +64,9 @@ public class PlayerControler : MonoBehaviour
         {
             dashDir = new Vector3();
             dashDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
-            /*if (Input.GetAxis("Horizontal") >0 && mayDash)
-            {
-                dashDir += new Vector3(1, 0, 0);
-            }
-            if (Input.GetAxis("Horizontal") < 0 && mayDash)
-            {
-                dashDir += new Vector3(-1, 0, 0);
-            }
-            if (Input.GetAxis("Vertical") > 0 && mayDash)
-            {
-                dashDir += new Vector3(0, 0, 1);
-            }
-            if (Input.GetAxis("Vertical") < 0 && mayDash)
-            {
-                dashDir += new Vector3(0, 0, -1);
-            }*/
             if(dashDir != new Vector3())
             {
                 StartCoroutine(Dash());
-                Debug.Log(dashDir);
             }
         }
     }
