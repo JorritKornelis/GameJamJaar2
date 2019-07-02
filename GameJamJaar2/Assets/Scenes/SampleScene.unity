@@ -169,9 +169,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 8
   mayMoveBool: 1
+  vidHolder: {fileID: 1220244836}
   dashAmount: 30
   dashTime: 0.2
-  vidHolder: {fileID: 1220244836}
+  timerCoolDown: 1
+  timerCoolDownReset: 1
+  mayDash: 1
 --- !u!136 &171945820
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -364,6 +367,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 1140253916687566891, guid: a76cef06ebf3a1b4bb1377a26beb1f54,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1140253916687566895, guid: a76cef06ebf3a1b4bb1377a26beb1f54,
         type: 3}
