@@ -12,11 +12,14 @@ public class Bow : MonoBehaviour
     public float flySpeedBack;
     GameObject player;
     public LayerMask collMask;
+    public float chargeTimer;
+    float chargeTimerReset;
 
     private void Start()
     {
         arrow.GetComponent<Rigidbody>().isKinematic = true;
         player = GameObject.FindWithTag("Player");
+        chargeTimerReset = 0f;
     }
 
     private void Update()
@@ -41,14 +44,25 @@ public class Bow : MonoBehaviour
 
     void FireBow()
     {
-        if (Input.GetButtonDown("Fire1") && gotArrow == true)
+        if (Input.GetButton("Fire1") && gotArrow == true)
+        {
+            player.GetComponent<PlayerControler>().mayMoveBool = false;
+            if (chargeTimer <= 1)
+            {
+                chargeTimer += Time.deltaTime;
+            }
+        }
+        else if (Input.GetButtonUp("Fire1")&&gotArrow == true)
         {
             arrow.GetComponent<Rigidbody>().isKinematic = false;
             arrow.transform.parent = null;
             StartCoroutine(WaitBetweenShots());
             zoekPijl = true;
+            chargeTimer = chargeTimerReset;
 
             arrow.GetComponent<Rigidbody>().AddForce(-transform.forward * flySpeed * 10f);
+
+            player.GetComponent<PlayerControler>().mayMoveBool = true;
         }
     }
 
@@ -60,7 +74,8 @@ public class Bow : MonoBehaviour
 
     void RetrieveArrow()
     {
-        if (Input.GetButton("Fire1") && gotArrow == false)
+        //&& got collision whith ground 
+        if (Input.GetButton("Fire1") && gotArrow == false && arrow.transform.position.y <= 0.2f)
         {
             player.GetComponent<PlayerControler>().mayMoveBool = false;
 

@@ -97,7 +97,7 @@ public class PlayerControler : MonoBehaviour
         }
     }
 
-    void PlayerDeath()
+    public void PlayerDeath()
     {
         vidHolder.SetActive(true);
         vidHolder.GetComponent<VideoPlayer>().Play();
