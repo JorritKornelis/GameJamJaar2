@@ -573,6 +573,9 @@ MonoBehaviour:
   upspeed: 13
   groundImpact: {fileID: 2308354794594736444, guid: ab603d42c99b4c24c8f58d4800e3439e,
     type: 3}
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 1024
   phaseMoveDelay: 0.1
   lava: {fileID: 3853817290465599365, guid: 18c15457cdf64674eaac4d5ed3117d4d, type: 3}
   lavaPool: {fileID: 3502009915867801433, guid: 37687e66ed2c0f4429da2aeb5f50430d,
@@ -593,7 +596,6 @@ MonoBehaviour:
   - {fileID: 986108329}
   - {fileID: 180817110}
   - {fileID: 1039040617}
-  - {fileID: 0}
   - {fileID: 1864585174}
   - {fileID: 200015474}
   - {fileID: 1015524833}
