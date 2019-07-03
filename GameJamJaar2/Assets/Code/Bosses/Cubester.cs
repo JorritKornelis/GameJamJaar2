@@ -24,6 +24,7 @@ public class Cubester : BossBase
     bool activeLaser;
     public float upspeed;
     public GameObject groundImpact;
+    public LayerMask playerMask;
 
     [Header("Phase 2")]
     public float phaseMoveDelay;
@@ -57,6 +58,12 @@ public class Cubester : BossBase
                 Physics.OverlapSphere(eye.position, checkSize, arrowMask)[0].GetComponent<Rigidbody>().AddExplosionForce(arrowBackSpeed, eye.transform.position, arrowBackSpeed);
                 Damage();
             }
+
+        if (Physics.CheckBox(transform.position, Vector3.one * cubeSize / 2, transform.rotation, playerMask) && Time.timeScale == 1f)
+        {
+            GameObject.FindWithTag(playerTag).GetComponent<PlayerControler>().PlayerDeath();
+            StartCoroutine(SlowTime());
+        }
     }
 
     public IEnumerator InvincibleFrames()
@@ -128,6 +135,7 @@ public class Cubester : BossBase
     {
         activeLaser = true;
         GameObject tempLaser = Instantiate(laser,eye.position,eye.rotation, eye);
+        tempLaser.GetComponent<CubesterLaser>().SetInfo(true, this);
         if (eye.position.y < normalHeight)
             StartCoroutine(AirTime(transform.position));
         else
@@ -249,5 +257,6 @@ public class Cubester : BossBase
     {
         if(eye)
             Gizmos.DrawWireCube(eye.position,new Vector3(checkSize,checkSize,0.1f));
+        Gizmos.DrawWireCube(transform.position, Vector3.one * cubeSize);
     }
 }
