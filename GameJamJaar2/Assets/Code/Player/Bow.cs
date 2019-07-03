@@ -35,6 +35,7 @@ public class Bow : MonoBehaviour
 
             arrow.transform.position = arrowPos.transform.position;
             arrow.transform.rotation = arrowPos.transform.rotation;
+
             zoekPijl = false;
             if (zoekPijl == false)
             {
@@ -45,7 +46,7 @@ public class Bow : MonoBehaviour
         if (b == true && arrow.transform.position.y <= 0.2f)
         {
             arrow.GetComponent<Rigidbody>().isKinematic = true;
-            b = false;
+            //b = false;
         }
         else if (b==false &&gotArrow == false)
         {
@@ -63,7 +64,7 @@ public class Bow : MonoBehaviour
                 chargeTimer += Time.deltaTime;
             }
         }
-        else if (Input.GetButtonUp("Fire1")&&gotArrow == true)
+        else if (Input.GetButtonUp("Fire1") && gotArrow == true && chargeTimer >= 0.5f)
         {
             arrow.GetComponent<Rigidbody>().isKinematic = false;
             arrow.transform.parent = null;

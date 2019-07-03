@@ -195,8 +195,7 @@ MonoBehaviour:
   vidHolder: {fileID: 0}
   dashAmount: 30
   dashTime: 0.2
-  timerCoolDown: 1
-  timerCoolDownReset: 1
+  timerCoolDown: 0.8
   mayDash: 1
 --- !u!135 &1230845685679143139
 SphereCollider:

@@ -17,13 +17,14 @@ public class PlayerControler : MonoBehaviour
     public float dashAmount;
     public float dashTime;
     public float timerCoolDown;
-    public float timerCoolDownReset;
+    float timerCoolDownReset;
     public bool mayDash = true;
     bool b = false;
 
     private void Start()
     {
         vidHolder.SetActive(false);
+        timerCoolDownReset = timerCoolDown;
     }
 
     void FixedUpdate()
