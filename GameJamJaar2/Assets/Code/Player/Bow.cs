@@ -14,6 +14,7 @@ public class Bow : MonoBehaviour
     public LayerMask collMask;
     public float chargeTimer;
     float chargeTimerReset;
+    bool b = false;
 
     private void Start()
     {
@@ -26,7 +27,7 @@ public class Bow : MonoBehaviour
     {
         RetrieveArrow();
         FireBow();
-
+        //get arrow
         if (gotArrow == false&& zoekPijl==true && Physics.CheckSphere(player.transform.position, player.GetComponent<SphereCollider>().radius, collMask))
         {
             arrow.GetComponent<Rigidbody>().isKinematic = true;
@@ -39,6 +40,16 @@ public class Bow : MonoBehaviour
             {
                 StartCoroutine(WaitBetweenShots());
             }
+        }
+
+        if (b == true && arrow.transform.position.y <= 0.2f)
+        {
+            arrow.GetComponent<Rigidbody>().isKinematic = true;
+            b = false;
+        }
+        else if (b==false &&gotArrow == false)
+        {
+            arrow.GetComponent<Rigidbody>().isKinematic = false;
         }
     }
 
@@ -61,33 +72,37 @@ public class Bow : MonoBehaviour
             chargeTimer = chargeTimerReset;
 
             arrow.GetComponent<Rigidbody>().AddForce(-transform.forward * flySpeed * 10f);
-
+            b = true;
             player.GetComponent<PlayerControler>().mayMoveBool = true;
         }
     }
 
     IEnumerator WaitBetweenShots()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
         gotArrow = !gotArrow;
+        Debug.Log(gotArrow + " Got Arrow");
     }
 
     void RetrieveArrow()
     {
-        //&& got collision whith ground 
-        if (Input.GetButton("Fire1") && gotArrow == false && arrow.transform.position.y <= 0.2f)
+        if (Input.GetButton("Fire1") && gotArrow == false)
         {
+            b = false;
             player.GetComponent<PlayerControler>().mayMoveBool = false;
 
             Vector3 tempDir = arrow.transform.position - player.transform.position;
             arrow.transform.LookAt(player.transform);
             arrow.GetComponent<Rigidbody>().velocity = -tempDir * flySpeedBack;
-
         }
 
         if (Input.GetButtonUp("Fire1"))
         {
             player.GetComponent<PlayerControler>().mayMoveBool = true;
+            if (!gotArrow)
+            {
+                b = true;
+            }
         }
     }
 }
