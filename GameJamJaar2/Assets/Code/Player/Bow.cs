@@ -83,6 +83,7 @@ public class Bow : MonoBehaviour
                 chargeTimer += Time.deltaTime;
                 mainCamera.GetComponent<ScreenShake>().enabled = false;
                 mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, mainCamera.transform.parent.position + (player.transform.forward * zoomAmount), 0.5f * Time.deltaTime * zoomPosSpeed);
+                
             }
         }
         else if (Input.GetButtonUp("Fire1") && mayShootArrow == true && chargeTimer >= 0.5f)
