@@ -13,7 +13,11 @@ public class CoorChange : MonoBehaviour
 
     public void ChangeColor(int index)
     {
-        text.color = ((index == 1) ? color1 : color2);
+        if (text)
+        {
+            text.color = ((index == 1) ? color1 : color2);
+        }
+
         obj.material.color = (index == 1) ? mCol1 : mCol2;
     }
 }
