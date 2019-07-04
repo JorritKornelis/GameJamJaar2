@@ -92,7 +92,9 @@ public class Bow : MonoBehaviour
             arrow.transform.parent = null;
             StartCoroutine(WaitBetweenShots());
             chargeTimer = chargeTimerReset;
-            mainCamera.GetComponent<ScreenShake>().enabled = true;
+
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, mainCamera.transform.parent.position, 1f * Time.deltaTime * zoomPosSpeed);
+            //mainCamera.GetComponent<ScreenShake>().enabled = true;
 
             zoekPijl = true;
             gotArrow = false;
