@@ -13,15 +13,21 @@ public class Bow : MonoBehaviour
     public float flySpeedBack;
     GameObject player;
     public LayerMask collMask;
-    public float chargeTimer;
+    float chargeTimer;
     float chargeTimerReset;
     bool b = false;
+    GameObject mainCamera;
+    public float zoomPosSpeed;
+    Vector3 zoomPosOut;
+    public float zoomAmount;
 
     private void Start()
     {
         arrow.GetComponent<Rigidbody>().isKinematic = true;
         player = GameObject.FindWithTag("Player");
         chargeTimerReset = 0f;
+        mainCamera = Camera.main.gameObject;
+        zoomPosOut = mainCamera.transform.position;
     }
 
     private void Update()
@@ -62,9 +68,11 @@ public class Bow : MonoBehaviour
         if (Input.GetButton("Fire1") && mayShootArrow == true)
         {
             player.GetComponent<PlayerControler>().mayMoveBool = false;
-            if (chargeTimer <= 1)
+            if (chargeTimer <= Mathf.Infinity)
             {
                 chargeTimer += Time.deltaTime;
+                mainCamera.GetComponent<ScreenShake>().enabled = false;
+                mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, mainCamera.transform.parent.position + (player.transform.forward * zoomAmount), 0.5f * Time.deltaTime * zoomPosSpeed);
             }
         }
         else if (Input.GetButtonUp("Fire1") && mayShootArrow == true && chargeTimer >= 0.5f)
@@ -73,6 +81,7 @@ public class Bow : MonoBehaviour
             arrow.transform.parent = null;
             StartCoroutine(WaitBetweenShots());
             chargeTimer = chargeTimerReset;
+            mainCamera.GetComponent<ScreenShake>().enabled = true;
 
             zoekPijl = true;
             gotArrow = false;
@@ -80,6 +89,10 @@ public class Bow : MonoBehaviour
             arrow.GetComponent<Rigidbody>().AddForce(-transform.forward * flySpeed * 10f);
             b = true;
             player.GetComponent<PlayerControler>().mayMoveBool = true;
+        }
+        else
+        {
+            mainCamera.GetComponent<ScreenShake>().enabled = true;
         }
     }
 
@@ -96,6 +109,7 @@ public class Bow : MonoBehaviour
         {
             b = false;
             player.GetComponent<PlayerControler>().mayMoveBool = false;
+            player.transform.LookAt(arrow.transform.position);
 
             Vector3 tempDir = arrow.transform.position - player.transform.position;
             arrow.transform.LookAt(player.transform);
