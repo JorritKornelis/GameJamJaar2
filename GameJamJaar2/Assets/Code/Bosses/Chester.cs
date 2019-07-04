@@ -30,10 +30,20 @@ public class Chester : BossBase
         yield return new WaitForSeconds(moveCooldown);
         /*int index = Random.Range(0, 100);
         if (index < 60)
-            StartCoroutine(JumpToPlayer());
+            if(index < 40)
+                StartCoroutine(JumpToPlayer());
+            else
+                StartCoroutine(Dash());
         else
             StartCoroutine(CoinShotAir());*/
-        StartCoroutine(Dash());
+        StartCoroutine(Shot());
+    }
+
+    public IEnumerator Shot()
+    {
+        StartCoroutine(LookAtPlayer());
+        yield return new WaitForSeconds(0.2f);
+        animationController.SetTrigger("Shot");
     }
 
     public IEnumerator Dash()
@@ -44,7 +54,7 @@ public class Chester : BossBase
         yield return new WaitForSeconds(0.6f);
         GameObject player = GameObject.FindWithTag(playertag);
         float currentY = transform.position.y;
-        transform.position = player.transform.position + (Vector3.up * 8f) + (-transform.forward * 2);
+        transform.position = player.transform.position + (Vector3.up * 8f) + (-transform.forward);
         yield return new WaitForSeconds(0.2f);
         while(transform.position.y > currentY)
         {
