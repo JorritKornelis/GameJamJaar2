@@ -25,6 +25,7 @@ public class Bow : MonoBehaviour
     public float blackAmount;
     public GameObject blackPanel;
     Color tempColor;
+    float flySpeedBackMulty;
 
     private void Start()
     {
@@ -93,8 +94,7 @@ public class Bow : MonoBehaviour
             StartCoroutine(WaitBetweenShots());
             chargeTimer = chargeTimerReset;
 
-            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, mainCamera.transform.parent.position, 1f * Time.deltaTime * zoomPosSpeed);
-            //mainCamera.GetComponent<ScreenShake>().enabled = true;
+            mainCamera.GetComponent<ScreenShake>().enabled = true;
 
             zoekPijl = true;
             gotArrow = false;
@@ -102,10 +102,6 @@ public class Bow : MonoBehaviour
             arrow.GetComponent<Rigidbody>().AddForce(-transform.forward * flySpeed * 10f);
             b = true;
             player.GetComponent<PlayerControler>().mayMoveBool = true;
-        }
-        else
-        {
-            mainCamera.GetComponent<ScreenShake>().enabled = true;
         }
     }
 
@@ -132,14 +128,18 @@ public class Bow : MonoBehaviour
                 }
                 blackPanel.GetComponent<Image>().color = tempColor;
             }
+            flySpeedBackMulty += 1f;
 
             Vector3 tempDir = arrow.transform.position - player.transform.position;
+            tempDir = tempDir.normalized;
             arrow.transform.LookAt(player.transform);
-            arrow.GetComponent<Rigidbody>().velocity = -tempDir * flySpeedBack;
+            arrow.GetComponent<Rigidbody>().velocity = -tempDir * (flySpeedBack + flySpeedBackMulty) * Time.deltaTime;
+            Debug.Log(flySpeedBackMulty);
         }
 
         if (Input.GetButtonUp("Fire1"))
         {
+            flySpeedBackMulty = 0;
             player.GetComponent<PlayerControler>().mayMoveBool = true;
             tempColor.a = 0f;
             blackPanel.GetComponent<Image>().color = tempColor;

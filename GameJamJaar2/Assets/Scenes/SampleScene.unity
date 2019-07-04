@@ -4288,6 +4288,11 @@ PrefabInstance:
       propertyPath: blackPanel
       value: 
       objectReference: {fileID: 1687918226}
+    - target: {fileID: 2683655306871458300, guid: e37ac71e7b13cad44a6a6eaf8af79241,
+        type: 3}
+      propertyPath: flySpeedBack
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e37ac71e7b13cad44a6a6eaf8af79241, type: 3}
 --- !u!1001 &4964573493004408460
@@ -4376,6 +4381,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4964573493387607033, guid: 4615e092be85ba64fbe02f4a3ead0123,
+        type: 3}
+      propertyPath: returnSpeed
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4615e092be85ba64fbe02f4a3ead0123, type: 3}
