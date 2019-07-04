@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bow : MonoBehaviour
 {
@@ -20,6 +21,10 @@ public class Bow : MonoBehaviour
     public float zoomPosSpeed;
     Vector3 zoomPosOut;
     public float zoomAmount;
+    public float blackSpeed;
+    public float blackAmount;
+    public GameObject blackPanel;
+    Color tempColor;
 
     private void Start()
     {
@@ -28,6 +33,8 @@ public class Bow : MonoBehaviour
         chargeTimerReset = 0f;
         mainCamera = Camera.main.gameObject;
         zoomPosOut = mainCamera.transform.position;
+
+        tempColor = blackPanel.GetComponent<Image>().color;
     }
 
     private void Update()
@@ -44,6 +51,9 @@ public class Bow : MonoBehaviour
             arrow.transform.position = arrowPos.transform.position;
             arrow.transform.rotation = arrowPos.transform.rotation;
             arrow.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+
+            tempColor.a = 0f;
+            blackPanel.GetComponent<Image>().color = tempColor;
 
             gotArrow = true;
             zoekPijl = false;
@@ -100,16 +110,25 @@ public class Bow : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         mayShootArrow = !mayShootArrow;
-        Debug.Log(mayShootArrow + " Got Arrow");
     }
 
     void RetrieveArrow()
     {
-        if (Input.GetButton("Fire1") && mayShootArrow == false)
+        if (Input.GetButton("Fire1") && mayShootArrow == false && gotArrow == false)
         {
             b = false;
             player.GetComponent<PlayerControler>().mayMoveBool = false;
             player.transform.LookAt(arrow.transform.position);
+
+            if (!gotArrow)
+            {
+                tempColor.a += blackAmount * Time.deltaTime * blackSpeed;
+                if (tempColor.a > blackAmount)
+                {
+                    tempColor.a = blackAmount;
+                }
+                blackPanel.GetComponent<Image>().color = tempColor;
+            }
 
             Vector3 tempDir = arrow.transform.position - player.transform.position;
             arrow.transform.LookAt(player.transform);
@@ -119,6 +138,8 @@ public class Bow : MonoBehaviour
         if (Input.GetButtonUp("Fire1"))
         {
             player.GetComponent<PlayerControler>().mayMoveBool = true;
+            tempColor.a = 0f;
+            blackPanel.GetComponent<Image>().color = tempColor;
             if (!mayShootArrow)
             {
                 b = true;
