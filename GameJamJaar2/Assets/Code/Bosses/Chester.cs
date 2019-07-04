@@ -28,15 +28,17 @@ public class Chester : BossBase
     public override IEnumerator CheckAttack()
     {
         yield return new WaitForSeconds(moveCooldown);
-        /*int index = Random.Range(0, 100);
+        int index = Random.Range(0, 100);
         if (index < 60)
-            if(index < 40)
-                StartCoroutine(JumpToPlayer());
+            if (index < 40)
+                if (index < 30)
+                    StartCoroutine(JumpToPlayer());
+                else
+                    StartCoroutine(Shot());
             else
                 StartCoroutine(Dash());
         else
-            StartCoroutine(CoinShotAir());*/
-        StartCoroutine(Shot());
+            StartCoroutine(CoinShotAir());
     }
 
     public IEnumerator Shot()
@@ -44,6 +46,21 @@ public class Chester : BossBase
         StartCoroutine(LookAtPlayer());
         yield return new WaitForSeconds(0.2f);
         animationController.SetTrigger("Shot");
+        yield return new WaitForSeconds(0.5f);
+        GameObject g = Instantiate(coinObject, weakPoint.position, transform.rotation);
+        StartCoroutine(FiredCoin(g));
+        yield return new WaitForSeconds(0.6f);
+        StartCoroutine(CheckAttack());
+    }
+
+    public IEnumerator FiredCoin(GameObject coin)
+    {
+        Destroy(coin, 0.6f);
+        while (coin != null)
+        {
+            coin.transform.Translate(Vector3.forward * 50 * Time.deltaTime);
+            yield return null;
+        }
     }
 
     public IEnumerator Dash()
@@ -73,7 +90,7 @@ public class Chester : BossBase
 
     public Vector3 GetCointPos(Vector3 centerPos, float range)
     {
-        return centerPos + new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range)) * 2f;
+        return centerPos + new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range));
     }
 
     public IEnumerator CoinShotAir()
@@ -131,11 +148,10 @@ public class Chester : BossBase
     public IEnumerator LookAtPlayer()
     {
         GameObject player = GameObject.FindWithTag(playertag);
-        Vector3 lookPos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
         float i = 0.2f;
         while (i > 0)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookPos - transform.position, Vector3.up), Time.deltaTime * 14f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z) - transform.position, Vector3.up), Time.deltaTime * 14f);
             i -= Time.deltaTime;
             yield return null;
         }
@@ -153,17 +169,16 @@ public class Chester : BossBase
                 height -= Time.deltaTime;
             }
             else
-                coin.transform.position = Vector3.Lerp(coin.transform.position, goToPoint - Vector3.up * 1, 7 * Time.deltaTime);
-            if (Vector3.Distance(coin.transform.position, goToPoint) < 0.02f)
+                coin.transform.position = Vector3.Lerp(coin.transform.position, goToPoint, 9 * Time.deltaTime);
+            if (Vector3.Distance(coin.transform.position, goToPoint) < 0.05f)
                 break;
             
             yield return null;
         }
-
-        yield return new WaitForSeconds(8f);
+        yield return new WaitForSeconds(6f);
 
         for (int i = 0; i < currentCoins.Count; i++)
-            if (currentCoins[i] == coin)
+            if (currentCoins[i].transform.position == coin.transform.position)
             {
                 currentCoins.RemoveAt(i);
                 Destroy(coin);
