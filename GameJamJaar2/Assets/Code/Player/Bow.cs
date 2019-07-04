@@ -133,7 +133,7 @@ public class Bow : MonoBehaviour
             Vector3 tempDir = arrow.transform.position - player.transform.position;
             tempDir = tempDir.normalized;
             arrow.transform.LookAt(player.transform);
-            arrow.GetComponent<Rigidbody>().velocity = -tempDir * (flySpeedBack + flySpeedBackMulty) * Time.deltaTime;
+            arrow.GetComponent<Rigidbody>().velocity = -tempDir * (flySpeedBack * flySpeedBackMulty) * Time.deltaTime;
             Debug.Log(flySpeedBackMulty);
         }
 
