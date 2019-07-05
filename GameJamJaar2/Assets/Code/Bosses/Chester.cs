@@ -11,6 +11,7 @@ public class Chester : BossBase
     public float moveCooldown;
 
     public int coinAmount;
+    public LayerMask playerMask;
     public GameObject coinObject;
     public float coinFireDelay;
     public Transform weakPoint;
@@ -19,26 +20,60 @@ public class Chester : BossBase
     List<GameObject> currentCoins = new List<GameObject>();
     public Animator animationController;
     public int maxCoins;
+    public float contactOffset;
+    public Vector3 contactSize;
+    public LayerMask arrowMask;
+    public float arrowDeathRange;
+    public bool damaged;
+
+    public override void Damage()
+    {
+        if (!damaged)
+            StartCoroutine(Explode());
+    }
+
+    public IEnumerator Explode()
+    {
+        damaged = true;
+        yield return null;
+    }
 
     public void Start()
     {
         StartCoroutine(CheckAttack());
     }
 
+    public void Update()
+    {
+        if (Physics.CheckBox(weakPoint.position, contactSize + (weakPoint.transform.up * contactOffset), weakPoint.rotation, playerMask))
+        {
+            GameObject.FindWithTag(playertag).GetComponent<PlayerControler>().PlayerDeath();
+            StartCoroutine(SlowTime());
+        }
+
+        if (Physics.CheckSphere(weakPoint.position, arrowDeathRange, arrowMask))
+        {
+            Damage();
+        }
+    }
+
     public override IEnumerator CheckAttack()
     {
-        yield return new WaitForSeconds(moveCooldown);
-        int index = Random.Range(0, 100);
-        if (index < 60)
-            if (index < 40)
-                if (index < 30)
-                    StartCoroutine(JumpToPlayer());
+        if (!damaged)
+        {
+            yield return new WaitForSeconds(moveCooldown);
+            int index = Random.Range(0, 100);
+            if (index < 60)
+                if (index < 40)
+                    if (index < 30)
+                        StartCoroutine(JumpToPlayer());
+                    else
+                        StartCoroutine(Shot());
                 else
-                    StartCoroutine(Shot());
+                    StartCoroutine(Dash());
             else
-                StartCoroutine(Dash());
-        else
-            StartCoroutine(CoinShotAir());
+                StartCoroutine(CoinShotAir());
+        }
     }
 
     public IEnumerator Shot()
@@ -46,10 +81,10 @@ public class Chester : BossBase
         StartCoroutine(LookAtPlayer());
         yield return new WaitForSeconds(0.2f);
         animationController.SetTrigger("Shot");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.6f);
         GameObject g = Instantiate(coinObject, weakPoint.position, transform.rotation);
         StartCoroutine(FiredCoin(g));
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(1.2f);
         StartCoroutine(CheckAttack());
     }
 
@@ -58,6 +93,11 @@ public class Chester : BossBase
         Destroy(coin, 0.6f);
         while (coin != null)
         {
+            if (Physics.CheckSphere(coin.transform.position, coinSize, playerMask))
+            {
+                GameObject.FindWithTag(playertag).GetComponent<PlayerControler>().PlayerDeath();
+                StartCoroutine(SlowTime());
+            }
             coin.transform.Translate(Vector3.forward * 50 * Time.deltaTime);
             yield return null;
         }
@@ -81,11 +121,6 @@ public class Chester : BossBase
         transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
         yield return new WaitForSeconds(0.7f);
         StartCoroutine(CheckAttack());
-    }
-
-    public override void Damage()
-    {
-
     }
 
     public Vector3 GetCointPos(Vector3 centerPos, float range)
@@ -172,7 +207,11 @@ public class Chester : BossBase
                 coin.transform.position = Vector3.Lerp(coin.transform.position, goToPoint, 9 * Time.deltaTime);
             if (Vector3.Distance(coin.transform.position, goToPoint) < 0.05f)
                 break;
-            
+            if (Physics.CheckSphere(coin.transform.position, coinSize, playerMask))
+            {
+                GameObject.FindWithTag(playertag).GetComponent<PlayerControler>().PlayerDeath();
+                StartCoroutine(SlowTime());
+            }
             yield return null;
         }
         yield return new WaitForSeconds(6f);
@@ -205,5 +244,12 @@ public class Chester : BossBase
 
         transform.position = new Vector3(transform.position.x, normalHeight, transform.position.z);
         StartCoroutine(CheckAttack());
+    }
+
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireCube(weakPoint.position + (weakPoint.transform.up * contactOffset), contactSize);
+        if (weakPoint)
+            Gizmos.DrawWireSphere(weakPoint.transform.position, arrowDeathRange);
     }
 }
