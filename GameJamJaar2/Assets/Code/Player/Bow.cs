@@ -26,6 +26,7 @@ public class Bow : MonoBehaviour
     public GameObject blackPanel;
     Color tempColor;
     float flySpeedBackMulty;
+    public float chargeSpeed;
 
     private void Start()
     {
@@ -87,7 +88,7 @@ public class Bow : MonoBehaviour
                 
             }
         }
-        else if (Input.GetButtonUp("Fire1") && mayShootArrow == true && chargeTimer >= 0.5f)
+        else if (Input.GetButtonUp("Fire1") && mayShootArrow == true && chargeTimer >= chargeSpeed)
         {
             arrow.GetComponent<Rigidbody>().isKinematic = false;
             arrow.transform.parent = null;
