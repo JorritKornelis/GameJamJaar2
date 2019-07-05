@@ -54,6 +54,7 @@ public class Chester : BossBase
         }
         yield return new WaitForSeconds(0.1f);
         deathCamera.gameObject.SetActive(false);
+        GameObject.FindWithTag("Manager").GetComponent<EndManager>().Won();
     }
 
     public IEnumerator CoinUp(GameObject coin)
@@ -96,7 +97,7 @@ public class Chester : BossBase
             int index = Random.Range(0, 100);
             if (index < 60)
                 if (index < 40)
-                    if (index < 30)
+                    if (index < 25)
                         StartCoroutine(JumpToPlayer());
                     else
                         StartCoroutine(Shot());
