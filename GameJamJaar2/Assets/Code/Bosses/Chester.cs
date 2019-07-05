@@ -26,6 +26,9 @@ public class Chester : BossBase
     public float arrowDeathRange;
     public bool damaged;
 
+    public int coinFireRounds;
+    public Transform deathCamera;
+
     public override void Damage()
     {
         if (!damaged)
@@ -34,8 +37,33 @@ public class Chester : BossBase
 
     public IEnumerator Explode()
     {
+        deathCamera.gameObject.SetActive(true);
+        deathCamera.transform.rotation = Quaternion.identity;
         damaged = true;
-        yield return null;
+        yield return new WaitForSeconds(0.3f);
+        animationController.SetTrigger("Death");
+        yield return new WaitForSeconds(0.5f);
+        for (int i = 0; i < coinFireRounds; i++)
+        {
+            StartCoroutine(CoinUp(Instantiate(coinObject, weakPoint.transform.position, weakPoint.transform.rotation)));
+            StartCoroutine(CoinUp(Instantiate(coinObject, weakPoint.transform.position, weakPoint.transform.rotation)));
+            StartCoroutine(CoinUp(Instantiate(coinObject, weakPoint.transform.position, weakPoint.transform.rotation)));
+            yield return new WaitForSeconds(coinFireDelay);
+        }
+        yield return new WaitForSeconds(0.1f);
+        deathCamera.gameObject.SetActive(false);
+    }
+
+    public IEnumerator CoinUp(GameObject coin)
+    {
+        Vector3 offset = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1)) / 3f;
+        coin.transform.Rotate(Random.Range(45, -45), Random.Range(45, -45), Random.Range(45, -45));
+        for (float i = 0; i < 1; i += Time.deltaTime)
+        {
+            coin.transform.Translate((Vector3.up + offset) * Time.deltaTime * 20f, Space.World);
+            yield return null;
+        }
+        Destroy(coin);
     }
 
     public void Start()
