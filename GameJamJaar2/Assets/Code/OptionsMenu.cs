@@ -17,7 +17,7 @@ public class OptionsMenu : MonoBehaviour
     {
         escHolder.SetActive(false);
 
-        masterVolume.value = PlayerPrefs.GetFloat("MasterVolumeMix", 0);
+        masterVolume.value = PlayerPrefs.GetFloat("MasterVolumeMix", -10);
     }
 
     void Update()
