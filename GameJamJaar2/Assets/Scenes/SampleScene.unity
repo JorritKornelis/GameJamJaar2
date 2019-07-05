@@ -2812,6 +2812,11 @@ PrefabInstance:
       propertyPath: flySpeedBack
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 2683655305048578219, guid: e37ac71e7b13cad44a6a6eaf8af79241,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: fc36804f39b210a4590e5b0bcce3af52, type: 2}
     - target: {fileID: 2683655305424441811, guid: e37ac71e7b13cad44a6a6eaf8af79241,
         type: 3}
       propertyPath: m_LocalPosition.z

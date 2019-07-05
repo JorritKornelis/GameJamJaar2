@@ -94,6 +94,8 @@ public class Bow : MonoBehaviour
             StartCoroutine(WaitBetweenShots());
             chargeTimer = chargeTimerReset;
 
+            player.GetComponent<PlayerControler>().ani.SetBool("Shoot", true);
+
             mainCamera.GetComponent<ScreenShake>().enabled = true;
 
             zoekPijl = true;

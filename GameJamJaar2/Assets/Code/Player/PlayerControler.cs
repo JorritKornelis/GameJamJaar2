@@ -9,6 +9,7 @@ public class PlayerControler : MonoBehaviour
     public float moveSpeed;
     public bool mayMoveBool = true;
     Vector3 dashDir;
+    public Animator ani;
 
     [Header("Death")]
     public GameObject vidHolder;
@@ -25,6 +26,7 @@ public class PlayerControler : MonoBehaviour
     {
         vidHolder.SetActive(false);
         timerCoolDownReset = timerCoolDown;
+        ani = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -32,7 +34,13 @@ public class PlayerControler : MonoBehaviour
         if (mayMoveBool == true)
         {
             PlayerMove();
+            ani.SetBool("Run", true);
         }
+        else
+        {
+            ani.SetBool("Run", false);
+        }
+
         LookToMouse();
         StartDash();
         if (b)
@@ -77,6 +85,9 @@ public class PlayerControler : MonoBehaviour
         float currentTime = dashTime;
         mayMoveBool = false;
         mayDash = false;
+
+        ani.SetBool("Dodge", true);
+
         while (currentTime > 0)
         {
             currentTime -= Time.deltaTime;
