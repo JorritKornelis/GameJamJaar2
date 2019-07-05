@@ -28,6 +28,7 @@ public class Chester : BossBase
 
     public int coinFireRounds;
     public Transform deathCamera;
+    public AudioClip fireShotGun, fireOne, jump, impact, open;
 
     public override void Damage()
     {
@@ -41,6 +42,7 @@ public class Chester : BossBase
         deathCamera.transform.rotation = Quaternion.identity;
         damaged = true;
         yield return new WaitForSeconds(0.3f);
+        PlayAudioClip(open);
         animationController.SetTrigger("Death");
         yield return new WaitForSeconds(0.5f);
         for (int i = 0; i < coinFireRounds; i++)
@@ -106,11 +108,13 @@ public class Chester : BossBase
 
     public IEnumerator Shot()
     {
+        PlayAudioClip(open);
         StartCoroutine(LookAtPlayer());
         yield return new WaitForSeconds(0.2f);
         animationController.SetTrigger("Shot");
         yield return new WaitForSeconds(0.6f);
         GameObject g = Instantiate(coinObject, weakPoint.position, transform.rotation);
+        PlayAudioClip(fireOne);
         StartCoroutine(FiredCoin(g));
         yield return new WaitForSeconds(1.2f);
         StartCoroutine(CheckAttack());
@@ -140,6 +144,7 @@ public class Chester : BossBase
         GameObject player = GameObject.FindWithTag(playertag);
         float currentY = transform.position.y;
         transform.position = player.transform.position + (Vector3.up * 8f) + (-transform.forward);
+        PlayAudioClip(open);
         yield return new WaitForSeconds(0.2f);
         while(transform.position.y > currentY)
         {
@@ -147,6 +152,7 @@ public class Chester : BossBase
             yield return null;
         }
         transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
+        PlayAudioClip(impact);
         yield return new WaitForSeconds(0.7f);
         StartCoroutine(CheckAttack());
     }
@@ -160,11 +166,13 @@ public class Chester : BossBase
     {
         if (currentCoins.Count <= maxCoins)
         {
+            PlayAudioClip(open);
             StartCoroutine(LookAtPlayer());
             animationController.SetTrigger("Shotgun");
             yield return new WaitForSeconds(0.3f);
             List<GameObject> coins = new List<GameObject>();
             float range = coinSize;
+            PlayAudioClip(fireShotGun);
             for (int i = 0; i < coinAmount; i++)
             {
                 GameObject g = Instantiate(coinObject, GetCointPos(GameObject.FindWithTag(playertag).transform.position, range), Quaternion.identity);
@@ -201,7 +209,7 @@ public class Chester : BossBase
                 yield return new WaitForSeconds(coinFireDelay);
             }
 
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.55f);
             StartCoroutine(CheckAttack());
         }
         else
@@ -259,6 +267,7 @@ public class Chester : BossBase
         yield return new WaitForSeconds(0.1f);
         float currentHeight = jumpSpeed;
         float normalHeight = transform.position.y;
+        PlayAudioClip(jump);
         while(currentHeight > 0)
         {
             if (currentHeight > jumpSpeed / 2f)
@@ -269,7 +278,7 @@ public class Chester : BossBase
             currentHeight -= Time.deltaTime;
             yield return null;
         }
-
+        PlayAudioClip(impact);
         transform.position = new Vector3(transform.position.x, normalHeight, transform.position.z);
         StartCoroutine(CheckAttack());
     }

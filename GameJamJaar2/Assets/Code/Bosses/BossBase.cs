@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class BossBase : MonoBehaviour
 {
+    public AudioSource audioSource;
     public abstract void Damage();
 
     public abstract IEnumerator CheckAttack();
@@ -16,5 +17,12 @@ public abstract class BossBase : MonoBehaviour
             yield return null;
         }
         Time.timeScale = 0f;
+    }
+
+    public void PlayAudioClip(AudioClip clip)
+    {
+        audioSource.pitch = 1;
+        audioSource.pitch += Random.Range(-0.05f, 0.05f);
+        audioSource.PlayOneShot(clip);
     }
 }
