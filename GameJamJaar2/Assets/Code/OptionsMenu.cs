@@ -25,6 +25,14 @@ public class OptionsMenu : MonoBehaviour
         if (Input.GetButtonDown("Cancel"))
         {
             escHolder.SetActive(!escHolder.activeSelf);
+            if (Time.time == 1)
+            {
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Time.timeScale = 1;
+            }
         }
     }
 
