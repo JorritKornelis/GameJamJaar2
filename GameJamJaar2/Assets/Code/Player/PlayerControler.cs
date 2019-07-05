@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 
 public class PlayerControler : MonoBehaviour
 {
@@ -145,6 +146,13 @@ public class PlayerControler : MonoBehaviour
     {
         vidHolder.SetActive(true);
         vidHolder.GetComponent<VideoPlayer>().Play();
+        StartCoroutine(LoadMainMenuDeath());
+    }
+
+    public IEnumerator LoadMainMenuDeath()
+    {
+        yield return new WaitForSeconds(1.5f);
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void PlayPlayerAudioClip(AudioClip clip)

@@ -116,6 +116,7 @@ public class Cubester : BossBase
         Destroy(g, 1f);
         foreach (GameObject laser in tempLasers)
             Destroy(laser);
+        GameObject.FindWithTag("Manager").GetComponent<EndManager>().Won();
         Destroy(gameObject);
     }
 

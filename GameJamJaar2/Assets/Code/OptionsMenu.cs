@@ -27,15 +27,14 @@ public class OptionsMenu : MonoBehaviour
         {
             escHolder.SetActive(!escHolder.activeSelf);
 
-            if (Time.timeScale == 1)
-            {
-                Time.timeScale = 0;
-            }
-            else
-            {
-                Time.timeScale = 1f;
-            }
-
+        }
+        if (Time.timeScale == 1 && escHolder.activeSelf == true)
+        {
+            Time.timeScale = 0;
+        }
+        else if (Time.timeScale == 0 && escHolder.activeSelf == false)
+        {
+            Time.timeScale = 1f;
         }
     }
 
