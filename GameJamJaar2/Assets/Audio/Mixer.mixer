@@ -1,24 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!243 &-7469585798458120932
-AudioMixerGroupController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Ambient
-  m_AudioMixer: {fileID: 24100000}
-  m_GroupID: 61085f472101e90428c431af4b88ec7b
-  m_Children: []
-  m_Volume: 1a795007a98985c4fab45f2f17c216d4
-  m_Pitch: 8b1251b13fdff0e438a4a5fdf2ef093e
-  m_Send: 00000000000000000000000000000000
-  m_Effects:
-  - {fileID: 3643335211183336108}
-  m_UserColorIndex: 0
-  m_Mute: 0
-  m_Solo: 0
-  m_BypassEffects: 0
 --- !u!241 &24100000
 AudioMixerController:
   m_ObjectHideFlags: 0
@@ -35,14 +16,11 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
-  - guid: 1a795007a98985c4fab45f2f17c216d4
-    name: AmbientNoise
   - guid: 3f02db0ea2c525040a6f10b49c6591ce
     name: MasterVolumeMix
   m_AudioMixerGroupViews:
   - guids:
     - 45cd5e111f557d5439b61aa3c1e4b88f
-    - 61085f472101e90428c431af4b88ec7b
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -55,8 +33,7 @@ AudioMixerGroupController:
   m_Name: Master
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 45cd5e111f557d5439b61aa3c1e4b88f
-  m_Children:
-  - {fileID: -7469585798458120932}
+  m_Children: []
   m_Volume: 3f02db0ea2c525040a6f10b49c6591ce
   m_Pitch: 95eb8ea85a3e3e3449b5ed8e4ea157a7
   m_Send: 00000000000000000000000000000000
@@ -91,17 +68,3 @@ AudioMixerSnapshotController:
   m_SnapshotID: 253e053523f424a4a9dccff4a11ec59f
   m_FloatValues: {}
   m_TransitionOverrides: {}
---- !u!244 &3643335211183336108
-AudioMixerEffectController:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_EffectID: 83e8be2c328526842a4b728f6d67dacb
-  m_EffectName: Attenuation
-  m_MixLevel: 1911b0a5c251514458742ab15aa4948b
-  m_Parameters: []
-  m_SendTarget: {fileID: 0}
-  m_EnableWetMix: 0
-  m_Bypass: 0
