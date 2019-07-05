@@ -49,11 +49,6 @@ public class OptionsMenu : MonoBehaviour
         audioMixer.SetFloat("MasterVolumeMix", amount);
     }
 
-    public void CloseOptions()
-    {
-        escHolder.SetActive(false);
-    }
-
     public void BackMainMenu()
     {
         SceneManager.LoadScene("MainMenu");

@@ -121,6 +121,8 @@ public class Bow : MonoBehaviour
             player.GetComponent<PlayerControler>().mayMoveBool = false;
             player.transform.LookAt(arrow.transform.position);
 
+            player.GetComponent<PlayerControler>().ani.SetBool("Shoot", true);
+
             if (!gotArrow)
             {
                 tempColor.a += blackAmount * Time.deltaTime * blackSpeed;
@@ -136,7 +138,7 @@ public class Bow : MonoBehaviour
             tempDir = tempDir.normalized;
             arrow.transform.LookAt(player.transform);
             arrow.GetComponent<Rigidbody>().velocity = -tempDir * (flySpeedBack * flySpeedBackMulty)* Time.deltaTime;
-            Debug.Log(flySpeedBackMulty);
+
         }
 
         if (Input.GetButtonUp("Fire1"))

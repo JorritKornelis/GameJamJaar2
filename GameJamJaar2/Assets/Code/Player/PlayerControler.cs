@@ -10,6 +10,7 @@ public class PlayerControler : MonoBehaviour
     public bool mayMoveBool = true;
     Vector3 dashDir;
     public Animator ani;
+    public ParticleSystem dust;
 
     [Header("Death")]
     public GameObject vidHolder;
@@ -35,10 +36,12 @@ public class PlayerControler : MonoBehaviour
         {
             PlayerMove();
             ani.SetBool("Run", true);
+            dust.Play();
         }
         else
         {
             ani.SetBool("Run", false);
+            dust.Stop();
         }
 
         LookToMouse();
