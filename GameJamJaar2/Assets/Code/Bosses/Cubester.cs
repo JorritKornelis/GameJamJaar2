@@ -42,6 +42,7 @@ public class Cubester : BossBase
     public List<Transform> deathLaserPoints;
     public bool death;
     public GameObject endExplosion;
+    public AudioClip laserSound, groundImpactSound, explosionSound, MoveSound;
 
     public void Start()
     {
@@ -79,6 +80,7 @@ public class Cubester : BossBase
             phase2 = true;
             GetComponent<MeshRenderer>().material = rageMaterial;
             GameObject g = Instantiate(phase2Explosion, transform.position, Quaternion.identity);
+            PlayAudioClip(explosionSound);
             StartCoroutine(InvincibleFrames());
         }
         else if (canBeDamaged)
@@ -101,13 +103,14 @@ public class Cubester : BossBase
         yield return new WaitForSeconds(1f);
         while (deathLaserPoints.Count != 0)
         {
+            PlayAudioClip(laserSound);
             int index = Random.Range(0, deathLaserPoints.Count);
             tempLasers.Add(Instantiate(laser, deathLaserPoints[index].position, deathLaserPoints[index].rotation));
             yield return new WaitForSeconds(0.7f - (0.7f / deathLaserPoints.Count));
             deathLaserPoints.RemoveAt(index);
         }
         GameObject g = Instantiate(endExplosion, transform.position, Quaternion.identity);
-
+        PlayAudioClip(explosionSound);
         yield return new WaitForSeconds(1f);
 
         Destroy(g, 1f);
@@ -133,6 +136,7 @@ public class Cubester : BossBase
 
     public IEnumerator Laser()
     {
+        PlayAudioClip(laserSound);
         activeLaser = true;
         GameObject tempLaser = Instantiate(laser,eye.position,eye.rotation, eye);
         tempLaser.GetComponent<CubesterLaser>().SetInfo(true, this);
@@ -183,6 +187,7 @@ public class Cubester : BossBase
             StartCoroutine(MoveLavaDown(l));
             Destroy(l, lavaLifetime);
         }
+        PlayAudioClip(groundImpactSound);
         StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.4f));
         GameObject g = Instantiate(groundImpact, transform.position, Quaternion.identity);
         Destroy(g, 2f);
@@ -249,6 +254,7 @@ public class Cubester : BossBase
         transform.position = oldPos + moveDirection;
         transform.rotation = oldRot;
         transform.Rotate(rotateDirection * 90, Space.World);
+        PlayAudioClip(MoveSound);
         StartCoroutine(Camera.main.GetComponent<ScreenShake>().Shake(0.1f));
         StartCoroutine(CheckAttack());
     }

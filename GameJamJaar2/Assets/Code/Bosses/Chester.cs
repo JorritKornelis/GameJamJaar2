@@ -83,7 +83,8 @@ public class Chester : BossBase
 
         if (Physics.CheckSphere(weakPoint.position, arrowDeathRange, arrowMask))
         {
-            Damage();
+            if (Physics.OverlapSphere(weakPoint.position, arrowDeathRange, arrowMask)[0].GetComponent<Rigidbody>().isKinematic == false)
+                Damage();
         }
     }
 

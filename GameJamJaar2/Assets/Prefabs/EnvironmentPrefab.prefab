@@ -1861,6 +1861,10 @@ GameObject:
   - component: {fileID: 9203988397535628922}
   - component: {fileID: 1883921601809283121}
   - component: {fileID: 2487833755913821469}
+  - component: {fileID: 1052029140}
+  - component: {fileID: 1052029141}
+  - component: {fileID: 1052029142}
+  - component: {fileID: 1052029143}
   m_Layer: 0
   m_Name: CheckerBoardBorder
   m_TagString: Untagged
@@ -1927,6 +1931,58 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1052029140
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932007344395562479}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 30.859665, y: 3.2650406, z: 1.4423409}
+  m_Center: {x: -0.03835106, y: 0.58735, z: -14.713972}
+--- !u!65 &1052029141
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932007344395562479}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.091115, y: 3.2650406, z: 30.786404}
+  m_Center: {x: -14.713791, y: 0.58735, z: -0.04194069}
+--- !u!65 &1052029142
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932007344395562479}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2039738, y: 3.2650406, z: 30.786404}
+  m_Center: {x: 14.7894945, y: 0.58735, z: -0.04194069}
+--- !u!65 &1052029143
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932007344395562479}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 30.859665, y: 3.2650406, z: 0.9554796}
+  m_Center: {x: -0.03835106, y: 0.58735, z: 14.873522}
 --- !u!1 &935671823380697746
 GameObject:
   m_ObjectHideFlags: 0
@@ -25163,6 +25219,7 @@ GameObject:
   - component: {fileID: 9108315380591181540}
   - component: {fileID: 4090553840303214949}
   - component: {fileID: 8231890443428723005}
+  - component: {fileID: 1231196796}
   m_Layer: 0
   m_Name: CheckerBoardPlatrform
   m_TagString: Untagged
@@ -25231,6 +25288,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1231196796
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8429744204360369448}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 28, y: 0.027653113, z: 28}
+  m_Center: {x: 0, y: 0.004608841, z: 0.0000009536743}
 --- !u!1 &8512477994315069351
 GameObject:
   m_ObjectHideFlags: 0

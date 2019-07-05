@@ -160,7 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 8
   mayMoveBool: 1
-  ani: {fileID: 0}
+  ani: {fileID: 2683655305048578219}
   dust: {fileID: 1543525118488154723}
   vidHolder: {fileID: 0}
   dashAmount: 30
@@ -2072,11 +2072,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2683655305048578218}
     m_Modifications:
-    - target: {fileID: 3482955567113322787, guid: c3f5404ae0ae2f547a15ea2070219816,
-        type: 3}
-      propertyPath: m_Name
-      value: Dust
-      objectReference: {fileID: 0}
     - target: {fileID: 3482955567113322784, guid: c3f5404ae0ae2f547a15ea2070219816,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2151,6 +2146,11 @@ PrefabInstance:
         type: 3}
       propertyPath: prewarm
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3482955567113322787, guid: c3f5404ae0ae2f547a15ea2070219816,
+        type: 3}
+      propertyPath: m_Name
+      value: Dust
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3f5404ae0ae2f547a15ea2070219816, type: 3}
