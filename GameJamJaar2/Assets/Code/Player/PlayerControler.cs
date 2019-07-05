@@ -12,6 +12,13 @@ public class PlayerControler : MonoBehaviour
     public Animator ani;
     public ParticleSystem dust;
 
+    [Header("Audio")]
+    public AudioSource audioPlayerSource;
+    public AudioClip move;
+    public AudioClip shoot;
+    public AudioClip shootCharge;
+    public AudioClip roll;
+
     [Header("Death")]
     public GameObject vidHolder;
 
@@ -22,6 +29,7 @@ public class PlayerControler : MonoBehaviour
     float timerCoolDownReset;
     public bool mayDash = true;
     bool b = false;
+    bool deleyBoolV2 = false;
 
     private void Start()
     {
@@ -43,6 +51,19 @@ public class PlayerControler : MonoBehaviour
             ani.SetBool("Run", false);
             dust.Stop();
         }
+        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        {
+            ani.SetBool("Run", false);
+            dust.Stop();
+        }
+        else
+        {
+            if (deleyBoolV2 == false)
+            {
+                deleyBoolV2 = true;
+                StartCoroutine(enumerator());
+            }
+        }
 
         LookToMouse();
         StartDash();
@@ -52,6 +73,13 @@ public class PlayerControler : MonoBehaviour
         }
     }
 
+    IEnumerator enumerator()
+    {
+        PlayPlayerAudioClip(move);
+        while (audioPlayerSource.isPlaying)
+            yield return null;
+        deleyBoolV2 = false;
+    }
     void PlayerMove()
     {
         moveVector.x = -Input.GetAxis("Horizontal");
@@ -90,6 +118,7 @@ public class PlayerControler : MonoBehaviour
         mayDash = false;
 
         ani.SetBool("Dodge", true);
+        PlayPlayerAudioClip(roll);
 
         while (currentTime > 0)
         {
@@ -116,5 +145,12 @@ public class PlayerControler : MonoBehaviour
     {
         vidHolder.SetActive(true);
         vidHolder.GetComponent<VideoPlayer>().Play();
+    }
+
+    public void PlayPlayerAudioClip(AudioClip clip)
+    {
+        audioPlayerSource.pitch = 1;
+        audioPlayerSource.pitch += Random.Range(-0.05f, 0.05f);
+        audioPlayerSource.PlayOneShot(clip);
     }
 }

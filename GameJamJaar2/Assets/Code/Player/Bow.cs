@@ -27,6 +27,7 @@ public class Bow : MonoBehaviour
     Color tempColor;
     float flySpeedBackMulty;
     public float chargeSpeed;
+    bool deleyBool = false;
 
     private void Start()
     {
@@ -85,7 +86,12 @@ public class Bow : MonoBehaviour
                 chargeTimer += Time.deltaTime;
                 mainCamera.GetComponent<ScreenShake>().enabled = false;
                 mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, mainCamera.transform.parent.position + (player.transform.forward * zoomAmount), 0.5f * Time.deltaTime * zoomPosSpeed);
-                
+                if (deleyBool == false)
+                {
+                    deleyBool = true;
+                    player.GetComponent<PlayerControler>().PlayPlayerAudioClip(player.GetComponent<PlayerControler>().shootCharge);
+                }
+
             }
         }
         else if (Input.GetButtonUp("Fire1") && mayShootArrow == true && chargeTimer >= chargeSpeed)
@@ -96,9 +102,11 @@ public class Bow : MonoBehaviour
             chargeTimer = chargeTimerReset;
 
             player.GetComponent<PlayerControler>().ani.SetBool("Shoot", true);
+            player.GetComponent<PlayerControler>().PlayPlayerAudioClip(player.GetComponent<PlayerControler>().shoot);
 
             mainCamera.GetComponent<ScreenShake>().enabled = true;
 
+            deleyBool = false;
             zoekPijl = true;
             gotArrow = false;
 
