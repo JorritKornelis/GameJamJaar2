@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour
 {
@@ -53,9 +54,8 @@ public class OptionsMenu : MonoBehaviour
         escHolder.SetActive(false);
     }
 
-    public void QuitGame()
+    public void BackMainMenu()
     {
-        Debug.Log("DIKKE KABAB NEGER");
-        Application.Quit();
+        SceneManager.LoadScene("MainMenu");
     }
 }
